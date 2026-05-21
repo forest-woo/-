@@ -1,0 +1,3 @@
+﻿  book.cpp
+C:\Users\user\Desktop\gbkim\book\book\book.cpp(115,40): warning C4477: 'scanf' : 서식 문자열 '%s'에 'char *' 형식의 인수가 필요하지만 variadic 인수 1의 형식이 'Title'입니다.
+  book.vcxproj -> C:\Users\user\Desktop\gbkim\book\x64\Debug\book.exe
