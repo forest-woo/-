@@ -414,5 +414,6 @@ int main()
         }
     } while (1);
 
+    free(library.library);
     return 0;
 }
