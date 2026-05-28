@@ -9,7 +9,7 @@
 
 #define			MAX_MID_CHAR		50
 #define			MAX_LONG_CHAR		100
-#define			MAX_BOOK_SIZE		4			
+#define			MAX_BOOK_SIZE		2			
 
 
 typedef struct Title {
@@ -45,12 +45,18 @@ typedef struct
 
 int mainMenu();
 
+int libFull(Library* lib);
+
 // int	insertBook(Book lib[], const int max, int* length);  
 int insertBook(Library *lib);
 
 Book inputBook(Library *lib);
-int	printBook(Library lib);
+
+int printBook(Library *lib);
+//void printBook(Library *lib);
+
 void outputBook(const Book book);
+void outputBook(Library *lib);
 
 int deleteBook(Library *lib);
 

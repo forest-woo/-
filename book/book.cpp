@@ -198,10 +198,9 @@ int	loadBook(Library *lib)
 }
 // 함수설명 : 1권의 책을 상세하게 출력하는 함수
 void outputBook(const Book book)
-{   
-
+{
     printf(" 1. 도서번호 : %d\n", book.bookId);
-    printf(" 2. 도 서 명 : %s\n", book.bookTitle);
+    printf(" 2. 도 서 명 : %s\n", book.bookTitle.bookHanTitle);
     printf(" 3. 저 자 명 : %s\n", book.bookAuthor);
     printf(" 4. 출판사 : %s\n", book.bookPublishingCompany);
     printf(" 5. 페이지 : %d\n", book.bookPages);
@@ -210,19 +209,38 @@ void outputBook(const Book book)
     printf(" 8. 판 : %d\n", book.bookVersion);
     printf(" 9. 도서이미지 : %s\n", book.bookImage);
     printf("10. ISBN : %d\n\n", book.bookISBN);
-
     return;
 }
+
+/*void outputBook(Library *lib)
+{   
+    for(int i = 0; i< lib->length; i++)
+    {
+        printf(" 1. 도서번호 : %d\n", lib -> library[i].bookId);
+        printf(" 2. 도 서 명 : %s\n", lib -> library[i].bookTitle);
+        printf(" 3. 저 자 명 : %s\n", lib -> library[i].bookAuthor);
+        printf(" 4. 출판사 : %s\n", lib -> library[i].bookPublishingCompany);
+        printf(" 5. 페이지 : %d\n", lib -> library[i].bookPages);
+        printf(" 6. 출판년도 : %d\n", lib -> library[i].bookPublishingYear);
+        printf(" 7. 가격 : %d\n", lib -> library[i].bookPrice);
+        printf(" 8. 판 : %d\n", lib -> library[i].bookVersion);
+        printf(" 9. 도서이미지 : %s\n", lib -> library[i].bookImage);
+        printf("10. ISBN : %d\n\n", lib -> library[i].bookISBN);
+    }
+    return;
+}
+*/
 //함수설명 : 도서를 출력하는 함수
 //함수인자 설명 : 
 //  lib : 도서를 입력하고자 하는 도서배열
-int	printBook(Library lib)
+int printBook(Library* lib)
 {
     printf("\n 7. 도서를 출력하는 함수 실행\n");
-    for (int i = 0; i < lib.length; i++) {
-        outputBook(lib.library[i]);
+    for(int i =0; i< lib -> length; i++)
+    {
+        outputBook(lib->library[i]);
     }
-    printf(" # 총 %d 권의 도서가 출력되었습니다.\n\n", lib.length);
+    printf(" # 총 %d 권의 도서가 출력되었습니다.\n\n", lib->length);
     return 0;
 }
 
@@ -284,11 +302,48 @@ Book inputBook(Library *lib)
 // 
 // 리턴값 :  -101 - 배열이 full 인 경우
 
+int libFull(Library* lib)
+{
+    Book* temp;
+
+    //1. 확장된 배열을 위한 정보 설정
+    lib -> libMax = lib -> libMax + lib -> increment;
+
+    //2. 확장된 배열 생성하기(new)
+    temp = (Book*)malloc(sizeof(Book) * lib -> libMax);
+
+    //3. 기존의 배열 데이터를 확장된 배열로 이동
+    for (int i = 0; i < lib->length; i++)
+    {
+        temp[i] = lib->library[i];
+    }
+
+    //4. 이전 배열을 free
+    free(lib->library);
+
+    //5. 새로운 확장된 배열로 배열의 주소 이전
+    lib->library = temp;
+
+    /*int i;
+    element* temp
+    pQ->Qsize += pQ ->increment;
+    temp = (element*)malloc(pQ->Qsize * sizeof(element));
+    for (i = 0; i < pQ -> legnth; i++)
+    {
+        temp[i] = pQ->data[i];
+
+    }
+    free(pQ->data);
+    pQ->data = temp;
+    */
+
+    return 0;
+}
+
 int insertBook(Library *lib)
 {
     if (lib -> libMax <= lib -> length) {   // full
-        //libFull();
-        return -101;
+        libFull(lib);
     }
 
      // 1. 입력할 도서정보 받기   ==> book 구조체 (book.h)
@@ -371,7 +426,7 @@ int main()
 {
     Library library;
 
-    library = createLibrary(20,5);
+    library = createLibrary(MAX_BOOK_SIZE,2);
 
     int     choice = 0;     // 메뉴 선택을 위한 변수
     
@@ -387,24 +442,24 @@ int main()
             break;
         case 2:   //  2. 도 서 검 색
             {
-            int tempBookId = 0; // 검색할 도서번호를 입력받기 위한 변수
-            searchBook(library, tempBookId);
+            //int tempBookId = 0; // 검색할 도서번호를 입력받기 위한 변수
+            //searchBook(library, tempBookId);
             break;
             }
         case 3:   // 3. 도 서 삭 제
-            deleteBook(&library);
+            //deleteBook(&library);
             break;
         case 4:   // 4. 도 서 수 정
-            modifyBook(&library);
+            //modifyBook(&library);
             break;
         case 5:   // 5. 도 서 저 장
-            saveBook(&library);
+            //saveBook(&library);
             break;
         case 6:   // 6. 도 서 불 러 오 기
-            loadBook(&library);
+            //loadBook(&library);
             break;
         case 7:   // 7. 도 서 출 력
-            printBook(library);
+            printBook(&library);
             break;
         case 0:   // 0. 프그램 종료
         default:
